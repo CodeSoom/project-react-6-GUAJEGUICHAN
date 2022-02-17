@@ -21,6 +21,7 @@ export const { actions, reducer } = createSlice({
       isStudent: true,
       checkedToday: true,
     },
+    search: '',
     errorMessage: [],
   },
   reducers: {
@@ -116,6 +117,10 @@ export const { actions, reducer } = createSlice({
         errorMessage: [],
       };
     },
+    changeSearchField: (state, { payload: value }) => ({
+      ...state,
+      search: value,
+    }),
   },
 });
 
@@ -126,6 +131,7 @@ export const {
   changeAddMemberField,
   clearAddMemberField,
   addMember,
+  changeSearchField,
 } = actions;
 
 export default reducer;
