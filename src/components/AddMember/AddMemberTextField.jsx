@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TextField } from '@mui/material';
 
-export default function AddMembeTextField({
+export default function AddMemberTextField({
   type, value, name, onChange, error, children,
 }) {
   const helperText = () => {

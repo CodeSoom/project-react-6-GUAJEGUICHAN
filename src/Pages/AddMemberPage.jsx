@@ -2,14 +2,14 @@ import React, { useEffect, useCallback } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addMember, changeAddMemberField, clearAddMemberField } from '../slice';
-
 import styled from '@emotion/styled';
 
 import { Checkbox, FormControlLabel } from '@mui/material';
 
+import { addMember, changeAddMemberField, clearAddMemberField } from '../slice';
+
 import PageHeader from '../components/PageHeader';
-import AddMembeTextField from '../components/AddMember/AddMembeTextField';
+import AddMemberTextField from '../components/AddMember/AddMemberTextField';
 import IsStudentRadioButtons from '../components/AddMember/IsStudentRadioButtons';
 import AddMemberButton from '../components/AddMember/AddMemberButton';
 
@@ -21,15 +21,15 @@ const Container = styled.div`
 `;
 
 const InputContainer = styled.form`
-width:${'60%'};
-display:flex;
-flex-direction:column;
-align-self:center;
+  width:${'60%'};
+  display:flex;
+  flex-direction:column;
+  align-self:center;
 `;
 
 const ButtonContainer = styled.div`
   display:flex;
-flex-direction:row-reverse;
+  flex-direction:row-reverse;
 `;
 
 export default function AddMemberPage() {
@@ -56,7 +56,6 @@ export default function AddMemberPage() {
 
     if (dataName === 'checkedToday') {
       dispatch(changeAddMemberField({ name: dataName, value: checked }));
-
     } else {
       dispatch(changeAddMemberField({ name: dataName, value }));
     }
@@ -70,7 +69,7 @@ export default function AddMemberPage() {
     <Container>
       <PageHeader>학생 추가 입력란</PageHeader>
       <InputContainer>
-        <AddMembeTextField
+        <AddMemberTextField
           error={errorMessage}
           type="text"
           name="name"
@@ -78,18 +77,17 @@ export default function AddMemberPage() {
           onChange={handleChange}
         >
           이름
-        </AddMembeTextField>
-        <AddMembeTextField
+        </AddMemberTextField>
+        <AddMemberTextField
           error={errorMessage}
           type="number"
           value={gradeNumber}
           name="gradeNumber"
           onChange={handleChange}
-
         >
           학년
-        </AddMembeTextField>
-        <AddMembeTextField
+        </AddMemberTextField>
+        <AddMemberTextField
           error={errorMessage}
           type="number"
           value={classNumber}
@@ -98,7 +96,7 @@ export default function AddMemberPage() {
 
         >
           반
-        </AddMembeTextField>
+        </AddMemberTextField>
         <IsStudentRadioButtons
           name="isStudent"
           onChange={handleChange}
