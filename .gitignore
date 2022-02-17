@@ -1,0 +1,9 @@
+## Node.js
+node_modules
+
+coverage
+coverage/clover.xml
+coverage/coverage-final.json
+coverage/lcov.info
+coverage/lcov-report/App.jsx.html
+coverage/lcov-report/index.html
