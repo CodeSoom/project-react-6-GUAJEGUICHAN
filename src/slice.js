@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import members from './members';
+
+import { fetchSearchedMembers } from './services/api';
+
 import { getToday } from './utils';
 
 export const { actions, reducer } = createSlice({
@@ -21,6 +25,8 @@ export const { actions, reducer } = createSlice({
       isStudent: true,
       checkedToday: true,
     },
+    search: '',
+    searchedMembers: [],
     errorMessage: [],
   },
   reducers: {
@@ -116,6 +122,14 @@ export const { actions, reducer } = createSlice({
         errorMessage: [],
       };
     },
+    changeSearchField: (state, { payload: value }) => ({
+      ...state,
+      search: value,
+    }),
+    setSearchedMembers: (state, { payload: searchedMembers }) => ({
+      ...state,
+      searchedMembers,
+    }),
   },
 });
 
@@ -126,6 +140,26 @@ export const {
   changeAddMemberField,
   clearAddMemberField,
   addMember,
+  changeSearchField,
+  setSearchedMembers,
 } = actions;
+
+export function loadSearchedMembers() {
+  return async (dispatch, getState) => {
+    const { search } = getState();
+
+    const { searchedMembers } = await fetchSearchedMembers(search);
+
+    try {
+      dispatch(setSearchedMembers(searchedMembers));
+
+      if (searchedMembers.length === 0) {
+        throw Error('error');
+      }
+    } catch (error) {
+      dispatch(setSearchedMembers([]));
+    }
+  };
+}
 
 export default reducer;

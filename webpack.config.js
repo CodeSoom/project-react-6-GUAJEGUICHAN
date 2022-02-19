@@ -14,7 +14,7 @@ const config = {
     publicPath: '/',
   },
   devServer: {
-    port: 8080,
+    port: 9000,
     open: true,
     host: '0.0.0.0',
     historyApiFallback: {

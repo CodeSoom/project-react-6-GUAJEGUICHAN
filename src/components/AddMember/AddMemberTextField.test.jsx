@@ -1,17 +1,18 @@
 import React from 'react';
 
 import { render } from '@testing-library/react';
+
 import context from 'jest-plugin-context';
 
-import AddMembeTextField from './AddMembeTextField';
+import AddMemberTextField from './AddMemberTextField';
 
-describe('AddMembeTextField', () => {
+describe('AddMemberTextField', () => {
   const handleChange = jest.fn();
 
   context('when the name textbox has nothing', () => {
     it('renders', () => {
       render((
-        <AddMembeTextField
+        <AddMemberTextField
           type="text"
           value="박성일"
           name="name"
@@ -19,7 +20,7 @@ describe('AddMembeTextField', () => {
           error={['name blank']}
         >
           이름
-        </AddMembeTextField>
+        </AddMemberTextField>
       ));
     });
   });
@@ -27,7 +28,7 @@ describe('AddMembeTextField', () => {
   context('when the name has the name on the member list', () => {
     it('renders', () => {
       render((
-        <AddMembeTextField
+        <AddMemberTextField
           type="text"
           value="박성일"
           name="name"
@@ -35,7 +36,7 @@ describe('AddMembeTextField', () => {
           error={['duplicated']}
         >
           이름
-        </AddMembeTextField>
+        </AddMemberTextField>
       ));
     });
   });
@@ -43,7 +44,7 @@ describe('AddMembeTextField', () => {
   context('when doesn`t have any errors', () => {
     it('renders', () => {
       render((
-        <AddMembeTextField
+        <AddMemberTextField
           type="text"
           value="박성일"
           name="name"
@@ -51,7 +52,7 @@ describe('AddMembeTextField', () => {
           error={[]}
         >
           이름
-        </AddMembeTextField>
+        </AddMemberTextField>
       ));
     });
   });

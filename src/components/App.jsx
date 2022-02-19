@@ -9,7 +9,7 @@ import ClassContainer from './Check/ClassContainer';
 import GradeContainer from './Check/GradeContainer';
 import StudentsContainer from './Check/StudentsContainer';
 import CheckedListPage from '../Pages/CheckedListPage';
-import SerachPage from '../Pages/SerachPage';
+import SearchPage from '../Pages/SearchPage';
 
 export default function App() {
   return (
@@ -22,7 +22,7 @@ export default function App() {
       </Route>
       <Route path="/addmember" element={<AddMemberPage />} />
       <Route path="/checkedlist" element={<CheckedListPage />} />
-      <Route path="/search" element={<SerachPage />} />
+      <Route path="/search" element={<SearchPage />} />
 
     </Routes>
   );
