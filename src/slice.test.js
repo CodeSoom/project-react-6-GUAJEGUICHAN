@@ -2,6 +2,12 @@ import context from 'jest-plugin-context';
 
 import given from 'given2';
 
+import thunk from 'redux-thunk';
+
+import configureStore from 'redux-mock-store';
+
+import { fetchSearchedMembers } from './services/api';
+
 import reducer, {
   setDate,
   initiateChecks,
@@ -10,6 +16,8 @@ import reducer, {
   changeAddMemberField,
   clearAddMemberField,
   changeSearchField,
+  loadSearchedMembers,
+  setSearchedMembers,
 } from './slice';
 
 describe('slice', () => {
@@ -247,6 +255,65 @@ describe('slice', () => {
       const state = reducer(given.initialState, changeSearchField('이승만'));
 
       expect(state.search.includes('이승만'));
+    });
+  });
+
+  describe('setSearchedMembers', () => {
+    it('set searchedMembers', () => {
+      const state = reducer(given.initialState, setSearchedMembers([]));
+
+      expect(state.searchedMembers).toEqual([]);
+    });
+  });
+});
+
+const middlewares = [thunk];
+const mockStore = configureStore(middlewares);
+
+jest.mock('./services/api');
+
+describe('action', () => {
+  let store;
+
+  beforeEach(() => {
+    store = mockStore(() => ({
+      search: '이명박',
+      searchedMembers: given.searchedMembers, // given처리
+    }));
+  });
+
+  describe('loadSerachedMembers', () => {
+    fetchSearchedMembers.mockImplementation(() => ({ searchedMembers: given.searchedMembers }));
+
+    context('has no searchedMembers', () => {
+      given('searchedMembers', () => []);
+
+      it('throw error and set SearchedMembers []', async () => {
+        await store.dispatch(loadSearchedMembers());
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setSearchedMembers([]));
+      });
+    });
+
+    context('has any serachedMembers', () => {
+      given('searchedMembers', () => [{
+        id: 1,
+        isStudent: true,
+        name: '이승만',
+        gradeNumber: 1,
+        classNumber: 1,
+        checkedToday: undefined,
+      }]);
+
+      it('set searchedMembers', async () => {
+        await store.dispatch(loadSearchedMembers());
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toEqual(setSearchedMembers(given.searchedMembers));
+      });
     });
   });
 });
