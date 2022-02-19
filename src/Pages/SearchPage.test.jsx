@@ -1,5 +1,9 @@
 import React from 'react';
 
+import context from 'jest-plugin-context';
+
+import given from 'given2';
+
 import { MemoryRouter } from 'react-router-dom';
 
 import { fireEvent, render } from '@testing-library/react';
@@ -10,29 +14,52 @@ import SearchPage from './SearchPage';
 
 jest.mock('react-redux');
 
-test('SearchPage', () => {
+describe('SearchPage', () => {
   const dispatch = jest.fn();
 
-  useDispatch.mockImplementation(() => dispatch);
-
-  useSelector.mockImplementation((selector) => selector(
-    {
-      search: '',
-    },
-  ));
-
-  const { container, getByLabelText } = render(
+  const renderSerachPage = () => (render((
     <MemoryRouter>
       <SearchPage />
-    </MemoryRouter>,
+    </MemoryRouter>
+  )));
+  useDispatch.mockImplementation(() => dispatch);
 
-  );
+  useSelector.mockImplementation((selector) => selector({
+    search: given.search,
+    searchedMembers: [{
+      id: 1,
+      isStudent: true,
+      name: '이승만',
+      gradeNumber: 1,
+      classNumber: 1,
+      checkedToday: undefined,
+    }],
+  }));
 
-  fireEvent.change(getByLabelText('search'), {
-    target: { value: '이명박' },
+  it('renders TextField', () => {
+    const { getByLabelText } = renderSerachPage();
+
+    fireEvent.change(getByLabelText('search'), {
+      target: { value: '이명박' },
+    });
+
+    expect(dispatch).toBeCalled();
   });
 
-  expect(dispatch).toBeCalled();
+  context('when search is `` ', () => {
+    given('search', () => '');
+    it('shows 이름을 입력해주세요', () => {
+      const { container } = renderSerachPage();
 
-  expect(container).toHaveTextContent('학생 검색');
+      expect(container).toHaveTextContent('이름을 입력해 주세요!');
+    });
+  });
+  context('when search is `이` ', () => {
+    given('search', () => '이');
+    it('shows 이승만', () => {
+      const { container } = renderSerachPage();
+
+      expect(container).toHaveTextContent('이승만');
+    });
+  });
 });

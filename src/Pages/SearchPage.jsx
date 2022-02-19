@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { changeSearchField } from '../slice';
+import { changeSearchField, loadSearchedMembers } from '../slice';
 
 import PageHeader from '../components/PageHeader';
 
@@ -24,18 +24,26 @@ const SearchContainer = styled.div`
   margin:0px 30px;
 `;
 
+const ListContainer = styled.div`
+  display:flex;
+  flex-direction:column;
+`;
+
 export default function SearchPage() {
   const dispatch = useDispatch();
 
-  const { search } = useSelector((state) => ({
+  const { search, searchedMembers } = useSelector((state) => ({
     search: state.search,
+    searchedMembers: state.searchedMembers,
   }));
 
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const { target: { value } } = event;
 
     dispatch(changeSearchField(value));
-  };
+
+    dispatch(loadSearchedMembers());
+  }, []);
 
   return (
     <Container>
@@ -53,8 +61,13 @@ export default function SearchPage() {
           onChange={handleChange}
           value={search}
         />
-
       </SearchContainer>
+      <ListContainer>
+        {search === ''
+          ? <div>이름을 입력해 주세요!</div>
+          : searchedMembers.map((member) => (
+            <div key={member.id}>{member.name}</div>))}
+      </ListContainer>
     </Container>
   );
 }
